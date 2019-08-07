@@ -80,14 +80,12 @@ RESTORE
 
 ## 6*. Найдите, какую СУБД использует любимый вами проект
 
-TBD
-
-* Название проекта:
+* Название проекта: Dropbox;
 * Используемые базы данных:
-  * БД: (иерархическая, сетевая, реляционная, объектно-ориентированная, NoSql)
-  * БД: NoSQL (колоночная, key-value, документарная, in-memory, графовая)
-* Количество серверов БД:
-* Ссылка на источник:
+  * БД: mysql, реляционная;
+  * БД: Edgestore, графовая (собственная разработка);
+* Количество серверов БД: >400 мастер-серверов (из источника непонятно на какой момент и каких БД);
+* Ссылка на источник: [https://habr.com/ru/company/oleg-bunin/blog/417315/][habr_01], расшифровка доклада Славы Бахмутова на Highload++ 2017.
 
 [screen_01]: images/WideWorldImporters_screenshot.png
 [github_01]: https://github.com/zaur45/otus-mssql-201907-zaur
@@ -96,3 +94,4 @@ TBD
 [microsoft_01]: http://bit.ly/2OUXcXV
 [microsoft_02]: http://bit.ly/2OzW7UT
 [microsoft_03]: http://bit.ly/2MEo4Zp
+[habr_01]: https://habr.com/ru/company/oleg-bunin/blog/417315/
