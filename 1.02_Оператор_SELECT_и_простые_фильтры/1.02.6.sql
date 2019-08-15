@@ -58,3 +58,20 @@ WHERE
         WHERE   si.StockItemName = 'Chocolate frogs 250g'
     )
 ;
+
+----
+
+-- Самое очевидное решение, которое от меня ускользнуло.
+SELECT DISTINCT
+     Customers.CustomerID
+    ,Customers.CustomerName
+    ,Customers.PhoneNumber
+FROM
+    [Sales].[Orders]                AS Orders
+    JOIN [Sales].[OrderLines]       AS Lines        ON Orders.OrderID = Lines.OrderID
+    JOIN [Warehouse].[StockItems]   AS Items        ON Lines.StockItemID = Items.StockItemID
+    JOIN [Sales].[Customers]        AS Customers    ON Orders.CustomerID = Customers.CustomerID
+WHERE
+    Items.StockItemName = 'Chocolate frogs 250g'
+;
+

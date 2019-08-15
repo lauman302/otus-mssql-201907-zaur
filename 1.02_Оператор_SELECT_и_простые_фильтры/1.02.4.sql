@@ -20,11 +20,18 @@ SELECT
    ,[pp].PersonID
    ,[pp].FullName
 FROM 
-    Purchasing.SupplierTransactions     AS [st]
-    JOIN Purchasing.Suppliers           AS [su]     ON st.SupplierID = su.SupplierID
-    JOIN Application.DeliveryMethods    AS [dm]     ON su.DeliveryMethodID = dm.DeliveryMethodID
-                                                    AND dm.DeliveryMethodID in (1,7)
-    JOIN Application.People             AS [pp]     ON su.PrimaryContactPersonID = pp.PersonID
+    Purchasing.SupplierTransactions                     AS [st]
+
+    JOIN Purchasing.Suppliers                           AS [su]
+        JOIN Application.DeliveryMethods                AS [dm]
+        ON su.DeliveryMethodID = dm.DeliveryMethodID
+
+        JOIN Application.People                         AS [pp]
+        ON su.PrimaryContactPersonID = pp.PersonID
+    ON st.SupplierID = su.SupplierID
+
 
 WHERE
-    datepart(year, st.FinalizationDate) = 2014;
+    datepart(year, st.FinalizationDate) = 2014
+    AND dm.DeliveryMethodName IN ('Road Freight', 'Post');
+
