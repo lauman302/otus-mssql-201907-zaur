@@ -4,7 +4,6 @@
 USE WideWorldImporters;
 
 -- Вложенный запрос
-
 SELECT
      [People].[PersonID]
     ,[People].[FullName]
@@ -16,4 +15,18 @@ WHERE
         (SELECT [Orders].[SalespersonPersonID] FROM [Sales].[Orders]);
 
 
--- WITH (Для этого кейса разумного применения не придумал)
+-- WITH (Странный способ)
+WITH UnsucceedSalesPersons AS (
+    SELECT People.PersonID
+    FROM Application.People
+    WHERE People.IsSalesperson = 1
+    EXCEPT
+    SELECT [Orders].[SalespersonPersonID] AS PersonID
+    FROM [Sales].[Orders]
+)
+SELECT
+     [usp].[PersonID]
+    ,[People].[FullName]
+FROM
+    UnsucceedSalesPersons AS usp
+    JOIN [Application].[People] ON usp.PersonID = People.PersonID;

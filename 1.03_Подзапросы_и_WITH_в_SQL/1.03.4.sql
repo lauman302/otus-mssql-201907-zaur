@@ -23,7 +23,6 @@ WHERE
     AND Invoices.ConfirmedDeliveryTime IS NOT NULL;
 
 -- CTE
-
 WITH TopItems AS (
     SELECT TOP(3) StockItems.StockItemID
     FROM Warehouse.StockItems
@@ -41,7 +40,6 @@ SoldAndDelivered AS (
     WHERE
         Invoices.ConfirmedDeliveryTime IS NOT NULL
 )
-
 SELECT DISTINCT
      Cities.CityID
     ,Cities.CityName
@@ -50,5 +48,4 @@ FROM
     SoldAndDelivered AS sad
     JOIN Application.Cities ON sad.DeliveryCityID = Cities.CityID
     JOIN Application.People ON sad.PackedByPersonID = People.PersonID
-WHERE
-    sad.StockItemID IN (SELECT StockItemID FROM TopItems);
+    JOIN TopItems AS ti     ON sad.StockItemID = ti.StockItemID;

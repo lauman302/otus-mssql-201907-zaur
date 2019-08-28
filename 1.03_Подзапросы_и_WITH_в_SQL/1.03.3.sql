@@ -6,11 +6,10 @@ USE WideWorldImporters;
 
 -- 1
 WITH TopAmountClients AS (
-    SELECT TOP(3) CustomerTransactions.CustomerID
+    SELECT TOP(5) CustomerTransactions.CustomerID
     FROM        Sales.CustomerTransactions
     ORDER BY    CustomerTransactions.TransactionAmount DESC
 )
-
 SELECT
     Customers.CustomerID
    ,Customers.CustomerName
@@ -27,7 +26,7 @@ FROM
     Sales.Customers
 WHERE
     Customers.CustomerID IN (
-        SELECT TOP(3) CustomerTransactions.CustomerID
+        SELECT TOP(5) CustomerTransactions.CustomerID
         FROM        Sales.CustomerTransactions
         ORDER BY    CustomerTransactions.TransactionAmount DESC
     );
@@ -39,7 +38,7 @@ SELECT
 FROM
     Sales.Customers
     JOIN (
-        SELECT TOP(3) CustomerTransactions.CustomerID
+        SELECT TOP(5) CustomerTransactions.CustomerID
         FROM        Sales.CustomerTransactions
         ORDER BY    CustomerTransactions.TransactionAmount DESC
     ) AS TopAmountClients ON Customers.CustomerID = TopAmountClients.CustomerID;

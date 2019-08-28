@@ -43,11 +43,9 @@ FROM
     GROUP BY InvoiceId
     HAVING SUM(Quantity*UnitPrice) > 27000) AS SalesTotals
     ON Invoices.InvoiceID = SalesTotals.InvoiceID
-ORDER BY TotalSumm DESC
-;
+ORDER BY TotalSumm DESC;
 
 -- оптимизированный
-
 WITH
 -- Сумма продаж на каждый счёт-фактуру
 SalesTotals AS (
@@ -65,7 +63,6 @@ TotalSummForPickedItems AS (
     WHERE    Orders.PickingCompletedWhen IS NOT NULL
     GROUP BY ol.OrderID
 )
-
 -- Список счетов-фактур с суммой "по документам" и суммой для доставленных заказов
 SELECT
     Invoices.InvoiceID,
@@ -75,12 +72,8 @@ SELECT
     TotalSummForPickedItems.PickedTotalSumm AS TotalSummForPickedItems
 FROM
     Sales.Invoices
-    JOIN SalesTotals
-        ON Invoices.InvoiceID = SalesTotals.InvoiceID
-    JOIN TotalSummForPickedItems
-        ON Invoices.OrderId = TotalSummForPickedItems.OrderId
-    JOIN Application.People
-        ON Invoices.SalespersonPersonID = People.PersonID
+    JOIN SalesTotals             ON Invoices.InvoiceID = SalesTotals.InvoiceID
+    JOIN TotalSummForPickedItems ON Invoices.OrderId = TotalSummForPickedItems.OrderId
+    JOIN Application.People      ON Invoices.SalespersonPersonID = People.PersonID
 ORDER BY
-    SalesTotals.TotalSumm DESC
-;
+    SalesTotals.TotalSumm DESC;
