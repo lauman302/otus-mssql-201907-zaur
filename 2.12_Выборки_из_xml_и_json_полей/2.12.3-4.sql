@@ -24,7 +24,6 @@ FROM
 Запрос написать через функции работы с JSON.
 Тэги искать в поле CustomFields, а не в Tags.
 */
-
 SELECT
     si.StockItemID
     ,si.StockItemName
@@ -36,3 +35,18 @@ FROM
     Warehouse.StockItems as si
 WHERE
     JSON_QUERY(si.CustomFields, '$.Tags') LIKE '%Vintage%';
+
+-- Вариант без LIKE
+SELECT
+    si.StockItemID
+    ,si.StockItemName
+    ,JSON_VALUE(si.CustomFields, '$.CountryOfManufacture')      AS [CountryOfManufacture]
+    ,JSON_VALUE(si.CustomFields, '$.Range')                     AS [Range]
+    ,JSON_QUERY(si.CustomFields, '$.Tags')                      AS [Tags]
+    ,si.CustomFields
+    ,replace(replace(replace(T.value, '[', ''),']',''),'"','')  AS [Tag]
+FROM
+    Warehouse.StockItems as si
+    CROSS APPLY string_split(JSON_QUERY(si.CustomFields, '$.Tags'), ',') AS [T]
+WHERE
+    replace(replace(replace(T.value, '[', ''),']',''),'"','') = 'Vintage';
