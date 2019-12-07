@@ -95,3 +95,33 @@ Table 'StockItems'. Scan count 1, logical reads 2, physical reads 0, read-ahead 
 Total execution time: 00:00:01.429
 ```
 План запроса в файле `3.25.1_w_index.xml`.
+
+После добавления покрывающего индекса на `Sales.Invoices`:
+```sql
+CREATE NONCLUSTERED INDEX IX_Invoices_OrderID_with_Include
+ON Sales.Invoices (OrderID ASC, InvoiceDate ASC)
+INCLUDE (
+    BillToCustomerID
+    ,CustomerID
+    ,InvoiceID
+    );
+```
+количество логических чтений уменьшилось:
+```
+SQL Server parse and compile time:
+   CPU time = 101 ms, elapsed time = 126 ms.
+(3619 rows affected)
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Workfile'. Scan count 2, logical reads 96, physical reads 4, read-ahead reads 92, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'CustomerTransactions'. Scan count 1, logical reads 173, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Invoices'. Scan count 1, logical reads 221, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'OrderLines'. Scan count 16, logical reads 1011, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'StockItemTransactions'. Scan count 15, logical reads 59, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'StockItems'. Scan count 1, logical reads 2, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Orders'. Scan count 2, logical reads 882, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+(1 row affected)
+
+ SQL Server Execution Times:
+   CPU time = 483 ms,  elapsed time = 494 ms.
+Total execution time: 00:00:00.789
+```
